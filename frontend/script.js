@@ -2,7 +2,7 @@ const form = document.querySelector('form#playlist-form');
 const loading = document.querySelector('#loading');
 const content = document.querySelector('#content');
 
-const baseUrl = 'https://ytplaylist-len.herokuapp.com/playlist';
+const baseUrl = 'https://playlistyt.herokuapp.com/playlist';
 
 form.addEventListener('submit', getPlaylistInfo);
 
