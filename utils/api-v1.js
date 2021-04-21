@@ -24,31 +24,24 @@ async function getAllDurations(playlistId) {
         
         for (let video of data.items)  {
             let { videoId } = video.contentDetails;
+            const videoResponse = await axios.get('https://www.googleapis.com/youtube/v3/videos', {
+                params: {
+                    key: process.env.API_KEY,
+                    id: videoId,
+                    part: 'contentDetails'
+                }
+            });
+            const { data: videoData } = videoResponse;
+            if (videoData.items && videoData.items[0] && videoData.items[0].contentDetails && videoData.items[0].contentDetails.duration) {
+                videoDurations.push(videoData.items[0].contentDetails.duration);
+            }
+            
             videoIds.push(videoId);
         }
         
         firstRequest = false;
     }
     
-    let index = 0;
-    while (index < videoIds.length) {
-        let videosResp = await axios.get('https://www.googleapis.com/youtube/v3/videos', {
-            params:{
-                key: process.env.API_KEY,
-                id: videoIds.slice(index, index + 50).join(),
-                part: 'contentDetails'
-            }
-        });
-        
-        const {data: videoData} = videosResp;
-        for (let video of videoData?.items) {
-            if (! (video.contentDetails && video.contentDetails.duration) ) continue;
-            videoDurations.push(video.contentDetails.duration);
-        }
-        
-        index += 50;
-    }
-       
     return videoDurations;
 }
 
