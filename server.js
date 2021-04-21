@@ -16,7 +16,7 @@ const { getAllDurations } = require('./utils/api');
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.set('view engine', 'ejs');
 
-app.use('/', express.static(path.join(__dirname, 'frontend_testing')));
+app.use('/', express.static(path.join(__dirname, 'frontend')));
 
 app.use(cors());
 app.use(express.json());
