@@ -35,7 +35,6 @@ async function getPlaylistInfo(e) {
     for (let speed of Object.keys(data.speed)) 
         message += `<b>At a speed ${speed} :</b> ${durationToWords(data.speed[speed])}<br>`;
 
-    console.log(message);
     content.innerHTML = message;
     
     toggleLoading();
