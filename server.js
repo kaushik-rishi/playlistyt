@@ -16,13 +16,15 @@ const { getAllDurations } = require('./utils/api');
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.set('view engine', 'ejs');
 
+app.use('/', express.static(path.join(__dirname, 'frontend_testing')));
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-    res.render('index');
-});
+// app.get('/', (req, res) => {
+//     res.render('index');
+// });
 
 // this route hits the youtube API and returns the data to the server
 app.post('/playlist', async (req, res) => {
