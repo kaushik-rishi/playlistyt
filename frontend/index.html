@@ -3,8 +3,8 @@
 <head>
   <!-- <link rel="stylesheet" href="./css/tailwind.css"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.1/tailwind.min.css" />
-  <!-- <script async defer src="./script.js"></script> -->
-  <script async defer src="./script.min.js"></script>
+  <script async defer src="./script.js"></script>
+  <!-- <script async defer src="./script.min.js"></script> -->
   <title>YT Playlist len - PORT</title>
   
   <link rel="shortcut icon" href="./favicon.png" type="image/x-icon">  
@@ -14,7 +14,7 @@
   </style>
 </head>
 
-<body class="container mx-auto px-5">
+<body class="px-40 mx-auto px-5">
   <nav class="flex items-center justify-between my-5">
     <img src="./logo.png" alt="" width="150">
     <a href="https://github.com/kaushik-rishi" target="_blank"><img src="./gh.svg" alt="" width="40"></a>
@@ -27,7 +27,7 @@
   <form id="playlist-form">
       <div class="flex items-center justify-between">
         <span class="w-5/6 focus:border-gray-900">
-          <input type="text" name="playlistid" placeholder="Enter playlist link" class="w-full p-3 bg-gray-100 border-gray-300 focus:outline-none focus:ring focus:border-blue-300  rounded-l-lg">
+          <input required type="text" name="playlistid" placeholder="Enter playlist link" class="w-full p-3 bg-gray-100 border-gray-300 focus:outline-none focus:ring focus:border-blue-300  rounded-l-lg">
         </span>
         <span class="w-1/6"><button class="w-full p-3 bg-blue-500 rounded-r-lg text-white hover:bg-blue-600 focus:outline-none" type="submit">Get data</button></span>
       </div>

@@ -13,6 +13,7 @@ const {
 } = require('./utils/time');
 
 const { getAllDurations } = require('./utils/api');
+const { default: axios } = require('axios');
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/', express.static(path.join(__dirname, 'frontend')));
@@ -23,7 +24,37 @@ app.use(express.urlencoded({ extended: true }));
 
 // this route hits the youtube API and returns the data to the server
 app.post('/playlist', async (req, res) => {
-    const playlistId = req.body.playlistId;
+    let playlistId = req.body.playlistId;
+    
+    if (validator.isURL(playlistId)) {
+        playlistId = playlistId.split('?').pop();
+        let params = playlistId.split('&');
+        
+        for (let param of params) 
+            if (param.startsWith('list=')) 
+                playlistId = param.slice(5);
+    }
+
+    let playlistName;
+    try {
+        const playlistResponse = await axios.get('https://www.googleapis.com/youtube/v3/playlists', {
+            params: {
+                key: process.env.API_KEY,
+                id: playlistId,
+                part: 'snippet'
+            }
+        });
+        const playlistData = playlistResponse.data['items'];
+        playlistName = playlistData[0].snippet.title;
+        if (!playlistData.length) {
+            return res.json({
+                ok: false,
+                msg: 'Not a valid playlist id (or insufficient authorization)'
+            });
+        }
+    } catch (e) {
+        console.log(e.message);
+    }
     
     try {
         const isoDurations = getISODurations(await getAllDurations(playlistId));
@@ -39,6 +70,7 @@ app.post('/playlist', async (req, res) => {
             speed[speedLevel + 'x'] = secondsToIso(totalSeconds/speedLevel);
 
         return res.json({
+            playlistName,
             ok: true,
             totalDuration: totalISODuration,
             averageDuration,
@@ -46,6 +78,7 @@ app.post('/playlist', async (req, res) => {
             speed
         });
     } catch (e) {
+        console.log(e.message);
         return res.json({
             ok: false,
             msg: 'Something went wrong on the server. Please try later'
